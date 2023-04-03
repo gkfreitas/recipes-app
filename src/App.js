@@ -10,10 +10,10 @@ import Profile from './pages/Profile';
 function App() {
   return (
     <Switch>
-      <Route exact path= "/" component={Login}/>
-      <Route path= "/drinks" component={Drinks}/>
-      <Route path= "/meals" component={Meals}/>
-      <Route path= "/profile" component={Profile}/>
+      <Route exact path="/" component={ Login } />
+      <Route path="/drinks" component={ Drinks } />
+      <Route path="/meals" component={ Meals } />
+      <Route path="/profile" component={ Profile } />
     </Switch>
   );
 }
