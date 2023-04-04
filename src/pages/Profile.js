@@ -6,7 +6,6 @@ export default function Profile() {
   const mockEmail = 'email@mail.com';
   localStorage.setItem('email', mockEmail);
   const localEmail = localStorage.getItem('email');
-  console.log(localEmail);
   return (
     <div data-testid="profile-email">
       <h2>{localEmail}</h2>
