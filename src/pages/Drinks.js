@@ -1,9 +1,10 @@
 import React from 'react';
-import { useSearch } from '../context/SearchbarContext';
 import Footer from '../components/Footer';
+import { useSearch } from '../context/SearchbarContext';
 
 export default function Drinks() {
   const { data } = useSearch();
+  console.log(data);
   const index = 12;
   const results = data?.slice(0, index);
   return (

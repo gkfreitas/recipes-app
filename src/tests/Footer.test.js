@@ -1,15 +1,11 @@
-import { act, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import App from '../App';
+import Drinks from '../pages/Drinks';
 import renderWithRouter from '../renderWithRouter';
 
 test('Testando elementos do footer', () => {
-  const { history } = renderWithRouter(<App />);
-  act(() => {
-    history.push('/drinks');
-  });
-
+  const { history } = renderWithRouter(<Drinks />);
   const { location: { pathname } } = history;
   // Verificando a rota
   expect(pathname).toBe('/drinks');
