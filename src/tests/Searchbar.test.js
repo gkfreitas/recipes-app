@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import LoginProvider from '../context/LoginContext';
@@ -76,22 +76,24 @@ describe('app de receitas', () => {
   });
 
   test('Alert', async () => {
-    const alertMock = jest.spyOn(window, 'alert');
+    window.alert = jest.fn();
     const inputBusca = screen.getByTestId(searchInput);
     const nome = screen.getByTestId(nameRadio);
     const btnBuscar = screen.getByTestId(execBtn);
     userEvent.type(inputBusca, '3');
     userEvent.click(nome);
     userEvent.click(btnBuscar);
-    await waitFor(() => expect(alertMock).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(window.alert).toHaveBeenCalledTimes(1));
   });
 
-  // test('Alert', async () => {
-  //   const btnSearch = screen.getByTestId(searchTopBtn);
-  //   expect(btnSearch).toBeInTheDocument();
-  //   userEvent.click(btnSearch);
+  test('search Icon', async () => {
+    const btnSearch = screen.getByTestId(searchTopBtn);
+    expect(btnSearch).toBeInTheDocument();
+    userEvent.click(btnSearch);
+    userEvent.click(btnSearch);
 
-  //   const inputSearchBar = screen.getByTestId(searchInput);
-  //   await waitForElementToBeRemoved(inputSearchBar, { timeout: 3000 });
-  // });
+    const inputSearchBar = screen.getByTestId(searchInput);
+    userEvent.click(btnSearch);
+    expect(inputSearchBar).not.toBeInTheDocument();
+  });
 });
