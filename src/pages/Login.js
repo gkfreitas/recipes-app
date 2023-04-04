@@ -12,11 +12,11 @@ function Login() {
   function validateEmail() {
     const min = 6;
     const validationEmail = /\S+@\S+\.\S+/;
-    return !(validationEmail.test(email) && password.length >= min);
+    return !(validationEmail.test(email) && password.length > min);
   }
 
   function saveEmail(emailUser) {
-    localStorage.setItem('user', emailUser);
+    localStorage.setItem('user', JSON.stringify({ email: emailUser }));
   }
 
   return (
@@ -24,7 +24,7 @@ function Login() {
       onSubmit={ (e) => {
         e.preventDefault();
         saveEmail(email);
-        history.push('/Meals');
+        history.push('/meals');
       } }
     >
       <div>
@@ -38,7 +38,7 @@ function Login() {
         />
         <input
           data-testid="password-input"
-          type="text"
+          type="password"
           placeholder="Password"
           name="password"
           value={ password }

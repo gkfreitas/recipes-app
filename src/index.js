@@ -5,13 +5,16 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import LoginProvider from './context/LoginContext';
+import SearchProvider from './context/SearchbarContext';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
     <BrowserRouter>
       <LoginProvider>
-        <App />
+        <SearchProvider>
+          <App />
+        </SearchProvider>
       </LoginProvider>
     </BrowserRouter>,
 

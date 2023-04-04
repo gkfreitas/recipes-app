@@ -1,6 +1,12 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { handleSearch } from '../services/handleSearch';
+import { useSearch } from '../context/SearchbarContext';
 
 function SearchBar({ type }) {
+  const { setData } = useSearch();
+  const history = useHistory();
   const [searchValues, setSearchValues] = useState({
     searchInput: '',
     searchRadio: '',
@@ -13,39 +19,18 @@ function SearchBar({ type }) {
     });
   };
 
-  const handleSearch = () => {
-    const { searchInput, searchRadio } = searchValues;
-    const searchEnpoints = type === 'meal'
-      ? {
-        ingredient: `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`,
-        name: `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`,
-        'first-letter': `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`,
-      } : {
-        ingredient: `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchInput}`,
-        name: `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchInput}`,
-        'first-letter': `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchInput}`,
-      };
-    if (searchRadio === 'first-letter' && searchInput.length > 1) {
-      return global.alert('Sua busca deve conter somente 1 (um) caracter');
-    }
-    const endpoint = searchEnpoints[searchRadio];
-    fetch(endpoint)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  };
-
   return (
     <>
       <input
         type="text"
         data-testid="search-input"
-        name="search-input"
+        name="searchInput"
         onChange={ handleChange }
       />
 
       <input
         type="radio"
-        name="search-radio"
+        name="searchRadio"
         data-testid="ingredient-search-radio"
         value="ingredient"
         onChange={ handleChange }
@@ -54,7 +39,7 @@ function SearchBar({ type }) {
 
       <input
         type="radio"
-        name="search-radio"
+        name="searchRadio"
         data-testid="name-search-radio"
         value="name"
         onChange={ handleChange }
@@ -63,7 +48,7 @@ function SearchBar({ type }) {
 
       <input
         type="radio"
-        name="search-radio"
+        name="searchRadio"
         data-testid="first-letter-search-radio"
         value="first-letter"
         onChange={ handleChange }
@@ -71,7 +56,9 @@ function SearchBar({ type }) {
       <label htmlFor="first-letter-search-radio">Primeira letra</label>
 
       <button
-        onClick={ handleSearch }
+        onClick={ async () => setData(
+          await handleSearch(searchValues, history, type, global),
+        ) }
         type="button"
         data-testid="exec-search-btn"
       >
