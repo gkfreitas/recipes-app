@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSearch } from '../context/SearchbarContext';
+import Footer from '../components/Footer';
 
 export default function Drinks() {
   const { data } = useSearch();
@@ -19,6 +20,7 @@ export default function Drinks() {
           </div>
         ))
       }
+      <Footer />
     </div>
   );
 }
