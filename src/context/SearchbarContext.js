@@ -9,6 +9,7 @@ export default function SearchProvider({ children }) {
   const history = useHistory();
   const [data, setData] = useState([]);
   const [atualPath, setAtualPath] = useState({});
+  const [resetTrigger, setResetTrigger] = useState(false);
   const [filters, setFilters] = useState([]);
 
   const updatePathInfos = async () => {
@@ -36,10 +37,10 @@ export default function SearchProvider({ children }) {
     return () => {
       unlisten();
     };
-  }, []);
+  }, [resetTrigger]);
 
   const values = useMemo(() => ({
-    data, setData, atualPath, filters,
+    data, setData, atualPath, filters, setResetTrigger,
   }), [data, atualPath, filters]);
 
   return (
