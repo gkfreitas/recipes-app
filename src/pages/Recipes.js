@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSearch } from '../context/SearchbarContext';
 import Footer from '../components/Footer';
 
@@ -25,8 +25,7 @@ export default function Meals() {
     setData(Object.values(respData)[0]);
   };
 
-  const history = useHistory();
-
+  // const history = useHistory();
   return (
     <div>
       <div>
@@ -40,26 +39,34 @@ export default function Meals() {
             {filter}
           </button>
         )) }
-        <button
-          onClick={ handleFilter }
-          data-testid="All-category-filter"
-          type="button"
-        >
-          All
-        </button>
+        {filtersToRender.length > 0
+        && (
+          <button
+            onClick={ handleFilter }
+            data-testid="All-category-filter"
+            type="button"
+          >
+            All
+          </button>
+        )}
       </div>
       {
         results?.map((meal, indexr) => {
           const type = atualPath === '/meals' ? 'Meal' : 'Drink';
           return (
-            <div
-              aria-hidden="true"
-              onClick={ () => {
-                if (type === 'Meal') return history.push(`/meals/${meal[`id${type}`]}`);
-                history.push(`/drinks/${meal[`id${type}`]}`);
-              } }
-              data-testid={ `${indexr}-recipe-card` }
+            // <div
+            //   aria-hidden="true"
+            //   onClick={ () => {
+            //     if (type === 'Meal') return history.push(`/meals/${meal[`id${type}`]}`);
+            //     history.push(`/drinks/${meal[`id${type}`]}`);
+            //   } }
+            //   data-testid={ `${indexr}-recipe-card` }
+            //   key={ meal[`id${type}`] }
+            // >
+            <Link
+              to={ `${atualPath}/${meal[`id${type}`]}` }
               key={ meal[`id${type}`] }
+              data-testid={ `${indexr}-recipe-card` }
             >
               <img
                 data-testid={ `${indexr}-card-img` }
@@ -67,7 +74,8 @@ export default function Meals() {
                 alt={ meal[`str${type}`] }
               />
               <p data-testid={ `${indexr}-card-name` }>{meal[`str${type}`]}</p>
-            </div>
+            </Link>
+            // </div>
           );
         })
       }
