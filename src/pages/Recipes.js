@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSearch } from '../context/SearchbarContext';
 import Footer from '../components/Footer';
+import { RecipeContext } from '../context/RecipeContext';
+import { useSearch } from '../context/SearchbarContext';
 
 export default function Meals() {
   const { data, atualPath, filters, setData, setResetTrigger } = useSearch();
+  const { setRecipeID } = useContext(RecipeContext);
+
   const [atualFilter, setAtualFilter] = useState('All');
   const maxRecipes = 12;
   const maxFilters = 5;
@@ -55,6 +58,7 @@ export default function Meals() {
             <div
               aria-hidden="true"
               onClick={ () => {
+                setRecipeID(meal[`id${type}`]);
                 if (type === 'Meal') return history.push(`/meals/${meal[`id${type}`]}`);
                 history.push(`/drinks/${meal[`id${type}`]}`);
               } }
