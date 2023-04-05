@@ -15,10 +15,10 @@ function App() {
     <>
       <Header />
       <Switch>
-        <Route path="/meals/:id-da-receita/in-progress" component={ Recipe } />
-        <Route path="/drinks:id-da-receita/in-progress" component={ Recipe } />
-        <Route path="/drinks:id-da-receita" component={ Recipe } />
-        <Route path="/meals/:id-da-receita" component={ Recipe } />
+        <Route path="/meals/:id/in-progress" component={ Recipe } />
+        <Route path="/drinks/:id/in-progress" component={ Recipe } />
+        <Route path="/drinks/:id" component={ Recipe } />
+        <Route path="/meals/:id" component={ Recipe } />
         <Route path="/meals" component={ Recipes } />
         <Route path="/drinks" component={ Recipes } />
         <Route path="/profile" component={ Profile } />
