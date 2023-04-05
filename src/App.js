@@ -1,14 +1,13 @@
-import React from 'react';
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import Recipe from './pages/Recipe';
 import Recipes from './pages/Recipes';
 import Profile from './pages/Profile';
 import DoneRecipes from './pages/DoneRecipes';
-import FavoriteRecipes from './pages/FavoriteRecipes';
 import Header from './components/Header';
+import FavoriteRecipes from './pages/FavoriteRecipes';
 
 function App() {
   return (
