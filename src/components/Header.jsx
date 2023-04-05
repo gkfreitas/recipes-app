@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
+import { useSearch } from '../context/SearchbarContext';
 
 function Header() {
   const [search, setSearch] = useState(false);
-  const [atualPathInfos, setAtualPathInfos] = useState({});
-  const history = useHistory();
+  const { atualPath } = useSearch();
 
   const headerInfos = {
     '/meals': {
@@ -32,19 +32,7 @@ function Header() {
     },
   };
 
-  useEffect(() => {
-    const updatePathInfos = () => {
-      setAtualPathInfos(headerInfos[history.location.pathname]);
-    };
-
-    setAtualPathInfos(headerInfos[history.location.pathname]);
-
-    const unlisten = history.listen(updatePathInfos);
-
-    return () => {
-      unlisten();
-    };
-  }, [history]);
+  const atualPathInfos = headerInfos[atualPath];
 
   if (!atualPathInfos) return null;
   return (

@@ -31,3 +31,16 @@ export const handleSearch = async (searchValues, history, type, global) => {
   }
   return data[`${type}s`];
 };
+
+export const getFilters = async (setFilters, atualPath) => {
+  if (atualPath === '/meals') {
+    const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+    const respData = await response.json();
+    setFilters(respData.meals.map((meal) => meal.strCategory));
+    return;
+  }
+
+  const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
+  const respData = await response.json();
+  setFilters(respData.drinks.map((drink) => drink.strCategory));
+};
