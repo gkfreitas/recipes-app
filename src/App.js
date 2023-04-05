@@ -1,15 +1,15 @@
-import React from 'react';
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Login from './pages/Login';
-import Recipe from './pages/Recipe';
-import Meals from './pages/Meals';
-import Drinks from './pages/Drinks';
-import Profile from './pages/Profile';
-import DoneRecipes from './pages/DoneRecipes';
-import FavoriteRecipes from './pages/FavoriteRecipes';
+import './App.css';
 import Header from './components/Header';
+import DoneRecipes from './pages/DoneRecipes';
+import Drinks from './pages/Drinks';
+import FavoriteRecipes from './pages/FavoriteRecipes';
+import Login from './pages/Login';
+import Meals from './pages/Meals';
+import Profile from './pages/Profile';
+import Recipe from './pages/Recipe';
 
 function App() {
   return (

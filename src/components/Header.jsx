@@ -1,5 +1,5 @@
+import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
 
 function Header() {

@@ -1,6 +1,23 @@
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import App from '../App';
+import LoginProvider from '../context/LoginContext';
+import SearchProvider from '../context/SearchbarContext';
+import renderWithRouter from '../renderWithRouter';
+
+test('Testando elementos do footer', () => {
+  const { history } = renderWithRouter(
+    <LoginProvider>
+      <SearchProvider>
+        <App />
+      </SearchProvider>
+    </LoginProvider>,
+  );
+  act(() => {
+    history.push('/drinks');
+  });
+
   const { location: { pathname } } = history;
   // Verificando a rota
   expect(pathname).toBe('/drinks');
