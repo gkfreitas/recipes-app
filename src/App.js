@@ -6,7 +6,6 @@ import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
-import Recipe from './pages/Recipe';
 import RecipeDetails from './pages/RecipeDetails';
 import Recipes from './pages/Recipes';
 
@@ -15,8 +14,8 @@ function App() {
     <div className="mobile-width">
       <Header />
       <Switch>
-        <Route path="/meals/:id/in-progress" component={ Recipe } />
-        <Route path="/drinks/:id/in-progress" component={ Recipe } />
+        <Route path="/meals/:id/in-progress" component={ RecipeDetails } />
+        <Route path="/drinks/:id/in-progress" component={ RecipeDetails } />
         <Route path="/drinks/:id" component={ RecipeDetails } />
         <Route path="/meals/:id" component={ RecipeDetails } />
         <Route path="/meals" component={ Recipes } />

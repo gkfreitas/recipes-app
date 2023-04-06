@@ -11,6 +11,7 @@ export default function Meals() {
   const maxFilters = 5;
   const results = data?.slice(0, maxRecipes);
   const filtersToRender = filters?.slice(0, maxFilters);
+  const type = atualPath === '/meals' ? 'Meal' : 'Drink';
 
   const handleFilter = async ({ target }) => {
     const { innerText } = target;
@@ -26,6 +27,7 @@ export default function Meals() {
     setData(Object.values(respData)[0]);
   };
 
+  const handleClick = (meal) => history.push(`${atualPath}/${meal[`id${type}`]}`);
   // const history = useHistory();
   return (
     <div>
@@ -50,40 +52,23 @@ export default function Meals() {
             All
           </button>
         )}
-        {filtersToRender.length > 0
-        && (
-          <button
-            onClick={ handleFilter }
-            data-testid="All-category-filter"
-            type="button"
-          >
-            All
-          </button>
-        )}
       </div>
       {
-        results?.map((meal, indexr) => {
-          const type = atualPath === '/meals' ? 'Meal' : 'Drink';
-          return (
-            <div
-              aria-hidden="true"
-              onClick={ () => {
-                if (type === 'Meal') return history.push(`/meals/${meal[`id${type}`]}`);
-                history.push(`/drinks/${meal[`id${type}`]}`);
-              } }
-              data-testid={ `${indexr}-recipe-card` }
-              key={ meal[`id${type}`] }
-            >
+        results?.map((meal, indexr) => (
+          <button
+            onClick={ () => handleClick(meal) }
+            data-testid={ `${indexr}-recipe-card` }
+            key={ meal[`id${type}`] }
+          >
 
-              <img
-                data-testid={ `${indexr}-card-img` }
-                src={ meal[`str${type}Thumb`] }
-                alt={ meal[`str${type}`] }
-              />
-              <p data-testid={ `${indexr}-card-name` }>{meal[`str${type}`]}</p>
-            </div>
-          );
-        })
+            <img
+              data-testid={ `${indexr}-card-img` }
+              src={ meal[`str${type}Thumb`] }
+              alt={ meal[`str${type}`] }
+            />
+            <p data-testid={ `${indexr}-card-name` }>{meal[`str${type}`]}</p>
+          </button>
+        ))
       }
       <Footer />
     </div>

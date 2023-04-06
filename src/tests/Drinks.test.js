@@ -1,10 +1,10 @@
-import React from 'react';
 import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import App from '../App';
 import LoginProvider from '../context/LoginContext';
-import renderWithRouter from '../renderWithRouter';
 import SearchProvider from '../context/SearchbarContext';
+import renderWithRouter from '../renderWithRouter';
 
 const imgTestId = '0-recipe-card';
 

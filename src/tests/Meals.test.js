@@ -1,10 +1,10 @@
-import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import App from '../App';
 import LoginProvider from '../context/LoginContext';
-import renderWithRouter from '../renderWithRouter';
 import SearchProvider from '../context/SearchbarContext';
+import renderWithRouter from '../renderWithRouter';
 
 const imgTestId = '0-recipe-card';
 
@@ -50,7 +50,6 @@ describe('app de receitas', () => {
     expect(img2).toBeInTheDocument();
 
     userEvent.click(img2);
-
-    expect(screen.getByText(/Recipe/i)).toBeInTheDocument();
+    await waitFor(() => expect(screen.findByText(/Corba/i)).toBeInTheDocument());
   });
 });
