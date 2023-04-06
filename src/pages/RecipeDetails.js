@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Recommendations from '../components/Recommendations';
 import { useSearch } from '../context/SearchbarContext';
 
 export default function FavoriteRecipes() {
@@ -71,7 +72,8 @@ export default function FavoriteRecipes() {
           );
         })
       }
-
+      Recommendations:
+      <Recommendations />
     </div>
   );
 }
