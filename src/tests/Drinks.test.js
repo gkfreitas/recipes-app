@@ -9,7 +9,7 @@ import renderWithRouter from '../renderWithRouter';
 const imgTestId = '0-recipe-card';
 
 describe('app de receitas', () => {
-  beforeEach(() => {
+  test('Inputs dos tipos de drinks', async () => {
     const { history } = renderWithRouter(
       <LoginProvider>
         <SearchProvider>
@@ -20,9 +20,6 @@ describe('app de receitas', () => {
     act(() => {
       history.push('/drinks');
     });
-  });
-
-  test('Inputs dos tipos de drinks', async () => {
     await screen.findByText('GG');
     await screen.findByRole('button', { name: /Ordinary Drink/i });
 
@@ -51,6 +48,6 @@ describe('app de receitas', () => {
 
     userEvent.click(img2);
 
-    expect(screen.getByText(/Recipe/i)).toBeInTheDocument();
+    expect(history.location.pathname).toBe('/drinks/15997');
   });
 });

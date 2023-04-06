@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import LoginProvider from './context/LoginContext';
-import RecipeProvider from './context/RecipeContext';
 import SearchProvider from './context/SearchbarContext';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -14,9 +13,7 @@ ReactDOM
     <BrowserRouter>
       <LoginProvider>
         <SearchProvider>
-          <RecipeProvider>
-            <App />
-          </RecipeProvider>
+          <App />
         </SearchProvider>
       </LoginProvider>
     </BrowserRouter>,

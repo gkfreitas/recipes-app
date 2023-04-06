@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { useSearch } from '../context/SearchbarContext';
 
 export default function Meals() {
   const { data, atualPath, filters, setData, setResetTrigger } = useSearch();
-  const history = useHistory();
   const [atualFilter, setAtualFilter] = useState('All');
   const maxRecipes = 12;
   const maxFilters = 5;
@@ -27,8 +26,6 @@ export default function Meals() {
     setData(Object.values(respData)[0]);
   };
 
-  const handleClick = (meal) => history.push(`${atualPath}/${meal[`id${type}`]}`);
-  // const history = useHistory();
   return (
     <div>
       <div>
@@ -55,19 +52,21 @@ export default function Meals() {
       </div>
       {
         results?.map((meal, indexr) => (
-          <button
-            onClick={ () => handleClick(meal) }
-            data-testid={ `${indexr}-recipe-card` }
-            key={ meal[`id${type}`] }
-          >
-
-            <img
-              data-testid={ `${indexr}-card-img` }
-              src={ meal[`str${type}Thumb`] }
-              alt={ meal[`str${type}`] }
-            />
-            <p data-testid={ `${indexr}-card-name` }>{meal[`str${type}`]}</p>
-          </button>
+          <section key={ meal[`id${type}`] }>
+            <Link
+              to={ `${atualPath}/${meal[`id${type}`]}` }
+              data-testid={ `${indexr}-recipe-card` }
+            >
+              <img
+                width="420"
+                height="400"
+                data-testid={ `${indexr}-card-img` }
+                src={ meal[`str${type}Thumb`] }
+                alt={ meal[`str${type}`] }
+              />
+              <p data-testid={ `${indexr}-card-name` }>{meal[`str${type}`]}</p>
+            </Link>
+          </section>
         ))
       }
       <Footer />

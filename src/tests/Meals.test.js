@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import App from '../App';
@@ -9,7 +9,7 @@ import renderWithRouter from '../renderWithRouter';
 const imgTestId = '0-recipe-card';
 
 describe('app de receitas', () => {
-  beforeEach(() => {
+  test('Inputs dos tipos de meals', async () => {
     const { history } = renderWithRouter(
       <LoginProvider>
         <SearchProvider>
@@ -20,9 +20,6 @@ describe('app de receitas', () => {
     act(() => {
       history.push('/meals');
     });
-  });
-
-  test('Inputs dos tipos de meals', async () => {
     await screen.findByText('Corba');
     await screen.findByRole('button', { name: /Beef/i });
 
@@ -50,6 +47,6 @@ describe('app de receitas', () => {
     expect(img2).toBeInTheDocument();
 
     userEvent.click(img2);
-    await waitFor(() => expect(screen.findByText(/Corba/i)).toBeInTheDocument());
+    expect(history.location.pathname).toBe('/meals/52977');
   });
 });
