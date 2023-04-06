@@ -1,12 +1,11 @@
-import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { RecipeContext } from '../context/RecipeContext';
 import { useSearch } from '../context/SearchbarContext';
 
 export default function Meals() {
   const { data, atualPath, filters, setData, setResetTrigger } = useSearch();
-  const { setRecipeID } = useContext(RecipeContext);
+  const history = useHistory();
   const [atualFilter, setAtualFilter] = useState('All');
   const maxRecipes = 12;
   const maxFilters = 5;
@@ -56,29 +55,23 @@ export default function Meals() {
         results?.map((meal, indexr) => {
           const type = atualPath === '/meals' ? 'Meal' : 'Drink';
           return (
-            // <div
-            //   aria-hidden="true"
-            //   onClick={ () => {
-            //     if (type === 'Meal') return history.push(`/meals/${meal[`id${type}`]}`);
-            //     history.push(`/drinks/${meal[`id${type}`]}`);
-            //   } }
-            //   data-testid={ `${indexr}-recipe-card` }
-            //   key={ meal[`id${type}`] }
-            // >
-            <Link
-              to={ `${atualPath}/${meal[`id${type}`]}` }
-              key={ meal[`id${type}`] }
+            <div
+              aria-hidden="true"
+              onClick={ () => {
+                if (type === 'Meal') return history.push(`/meals/${meal[`id${type}`]}`);
+                history.push(`/drinks/${meal[`id${type}`]}`);
+              } }
               data-testid={ `${indexr}-recipe-card` }
-              onClick={ () => setRecipeID(meal[`id${type}`]) }
+              key={ meal[`id${type}`] }
             >
+
               <img
                 data-testid={ `${indexr}-card-img` }
                 src={ meal[`str${type}Thumb`] }
                 alt={ meal[`str${type}`] }
               />
               <p data-testid={ `${indexr}-card-name` }>{meal[`str${type}`]}</p>
-            </Link>
-            // </div>
+            </div>
           );
         })
       }

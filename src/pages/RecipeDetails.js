@@ -1,22 +1,21 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { RecipeContext } from '../context/RecipeContext';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useSearch } from '../context/SearchbarContext';
 
 export default function FavoriteRecipes() {
-  const history = useHistory();
-  const { recipeID } = useContext(RecipeContext);
+  const { id } = useParams();
   const [data, setData] = useState([]);
   const { atualPath } = useSearch();
+
   const updateData = useCallback(async () => {
-    if ((history.location.pathname).includes('/meals')) {
-      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeID}`);
+    if (atualPath?.includes('/meals')) {
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
       const mealsData = await response.json();
       console.log(mealsData);
       setData(mealsData.meals);
     }
-    if ((history.location.pathname).includes('/drinks')) {
-      const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${recipeID}`);
+    if (atualPath?.includes('/drinks')) {
+      const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
       const drinkData = await response.json();
       setData(drinkData.drinks);
     }
@@ -29,7 +28,7 @@ export default function FavoriteRecipes() {
     }
     getList();
   }, [updateData]);
-  console.log(data);
+
   const objectsData = data[0] && Object.keys(data[0]);
   const ingredients = objectsData?.filter((e) => e.includes('strIngredient'));
   const measures = objectsData?.filter((e) => e.includes('strMeasure'));
@@ -40,16 +39,18 @@ export default function FavoriteRecipes() {
     <div>
       {
         data?.map((meal) => {
-          const type = atualPath === `/meals/${recipeID}` ? 'Meal' : 'Drink';
+          const type = atualPath === `/meals/${id}` ? 'Meal' : 'Drink';
           return (
-            <div key={ recipeID }>
+            <div key={ id }>
               <img
                 data-testid="recipe-photo"
                 src={ meal[`str${type}Thumb`] }
                 alt={ meal[`str${type}`] }
               />
               <p data-testid="recipe-title">{meal[`str${type}`]}</p>
-              <p data-testid="recipe-category">{meal.strCategory}</p>
+              <p data-testid="recipe-category">
+                {`${meal.strCategory} ${meal.strAlcoholic}`}
+              </p>
               <h3>Ingredients:</h3>
               {ingredients.map((e, index) => (
                 <p key={ e } data-testid={ `${index}-ingredient-name-and-measure` }>

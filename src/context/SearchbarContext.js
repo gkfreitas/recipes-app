@@ -1,6 +1,6 @@
-import React, { createContext, useState, useMemo, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { getFilters } from '../services/handleSearch';
 
 const searchContext = createContext();
@@ -8,7 +8,7 @@ const searchContext = createContext();
 export default function SearchProvider({ children }) {
   const history = useHistory();
   const [data, setData] = useState([]);
-  const [atualPath, setAtualPath] = useState({});
+  const [atualPath, setAtualPath] = useState(history.location.pathname);
   const [resetTrigger, setResetTrigger] = useState(false);
   const [filters, setFilters] = useState([]);
 
