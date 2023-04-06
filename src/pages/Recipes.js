@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { RecipeContext } from '../context/RecipeContext';
 import { useSearch } from '../context/SearchbarContext';
@@ -7,7 +7,6 @@ import { useSearch } from '../context/SearchbarContext';
 export default function Meals() {
   const { data, atualPath, filters, setData, setResetTrigger } = useSearch();
   const { setRecipeID } = useContext(RecipeContext);
-
   const [atualFilter, setAtualFilter] = useState('All');
   const maxRecipes = 12;
   const maxFilters = 5;
@@ -28,8 +27,7 @@ export default function Meals() {
     setData(Object.values(respData)[0]);
   };
 
-  const history = useHistory();
-
+  // const history = useHistory();
   return (
     <div>
       <div>
@@ -43,27 +41,35 @@ export default function Meals() {
             {filter}
           </button>
         )) }
-        <button
-          onClick={ handleFilter }
-          data-testid="All-category-filter"
-          type="button"
-        >
-          All
-        </button>
+        {filtersToRender.length > 0
+        && (
+          <button
+            onClick={ handleFilter }
+            data-testid="All-category-filter"
+            type="button"
+          >
+            All
+          </button>
+        )}
       </div>
       {
         results?.map((meal, indexr) => {
           const type = atualPath === '/meals' ? 'Meal' : 'Drink';
           return (
-            <div
-              aria-hidden="true"
-              onClick={ () => {
-                setRecipeID(meal[`id${type}`]);
-                if (type === 'Meal') return history.push(`/meals/${meal[`id${type}`]}`);
-                history.push(`/drinks/${meal[`id${type}`]}`);
-              } }
-              data-testid={ `${indexr}-recipe-card` }
+            // <div
+            //   aria-hidden="true"
+            //   onClick={ () => {
+            //     if (type === 'Meal') return history.push(`/meals/${meal[`id${type}`]}`);
+            //     history.push(`/drinks/${meal[`id${type}`]}`);
+            //   } }
+            //   data-testid={ `${indexr}-recipe-card` }
+            //   key={ meal[`id${type}`] }
+            // >
+            <Link
+              to={ `${atualPath}/${meal[`id${type}`]}` }
               key={ meal[`id${type}`] }
+              data-testid={ `${indexr}-recipe-card` }
+              onClick={ () => setRecipeID(meal[`id${type}`]) }
             >
               <img
                 data-testid={ `${indexr}-card-img` }
@@ -71,7 +77,8 @@ export default function Meals() {
                 alt={ meal[`str${type}`] }
               />
               <p data-testid={ `${indexr}-card-name` }>{meal[`str${type}`]}</p>
-            </div>
+            </Link>
+            // </div>
           );
         })
       }
