@@ -50,19 +50,34 @@ export default function Meals() {
             All
           </button>
         )}
+        {filtersToRender.length > 0
+        && (
+          <button
+            onClick={ handleFilter }
+            data-testid="All-category-filter"
+            type="button"
+          >
+            All
+          </button>
+        )}
       </div>
       {
         results?.map((meal, indexr) => {
           const type = atualPath === '/meals' ? 'Meal' : 'Drink';
           return (
-            <div
-              aria-hidden="true"
-              onClick={ () => {
-                if (type === 'Meal') return history.push(`/meals/${meal[`id${type}`]}`);
-                history.push(`/drinks/${meal[`id${type}`]}`);
-              } }
-              data-testid={ `${indexr}-recipe-card` }
+            // <div
+            //   aria-hidden="true"
+            //   onClick={ () => {
+            //     if (type === 'Meal') return history.push(`/meals/${meal[`id${type}`]}`);
+            //     history.push(`/drinks/${meal[`id${type}`]}`);
+            //   } }
+            //   data-testid={ `${indexr}-recipe-card` }
+            //   key={ meal[`id${type}`] }
+            // >
+            <Link
+              to={ `${atualPath}/${meal[`id${type}`]}` }
               key={ meal[`id${type}`] }
+              data-testid={ `${indexr}-recipe-card` }
             >
 
               <img
@@ -71,7 +86,8 @@ export default function Meals() {
                 alt={ meal[`str${type}`] }
               />
               <p data-testid={ `${indexr}-card-name` }>{meal[`str${type}`]}</p>
-            </div>
+            </Link>
+            // </div>
           );
         })
       }
