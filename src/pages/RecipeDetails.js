@@ -12,7 +12,6 @@ export default function FavoriteRecipes() {
     if (atualPath?.includes('/meals')) {
       const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
       const mealsData = await response.json();
-      console.log(mealsData);
       setData(mealsData.meals);
     }
     if (atualPath?.includes('/drinks')) {
@@ -64,8 +63,6 @@ export default function FavoriteRecipes() {
               <iframe
                 data-testid="video"
                 src={ data[0].strYoutube && `https://www.youtube.com/embed/${endpoint[1]}` }
-                height="500px"
-                width="600px"
                 title="Video"
               />
             </div>
@@ -73,7 +70,7 @@ export default function FavoriteRecipes() {
         })
       }
       Recommendations:
-      <Recommendations />
+      <Recommendations dataRecipe={ data } />
     </div>
   );
 }
