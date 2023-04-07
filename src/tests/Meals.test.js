@@ -1,12 +1,10 @@
-import { act, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import App from '../App';
 import LoginProvider from '../context/LoginContext';
 import SearchProvider from '../context/SearchbarContext';
 import renderWithRouter from '../renderWithRouter';
-
-const imgTestId = '0-recipe-card';
 
 describe('app de receitas', () => {
   test('Inputs dos tipos de meals', async () => {
