@@ -1,4 +1,4 @@
-import { act, screen } from '@testing-library/react';
+import { act, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import App from '../App';
@@ -39,14 +39,34 @@ describe('app de receitas', () => {
     expect(screen.getAllByRole('img')).toHaveLength(16);
 
     userEvent.click(btnBeef);
-    const img1 = await screen.findByTestId(imgTestId);
-    expect(img1).toBeInTheDocument();
+
+    // screen.debug();
+    await waitFor(() => {
+      const recipes1 = screen.getAllByTestId(/card-name/i);
+      expect(recipes1[0].innerHTML).toBe('Beef and Mustard Pie');
+    }, { timeout: 3000 });
+
+    userEvent.click(btnBeef);
+    await waitFor(() => {
+      const recipes1 = screen.getAllByTestId(/card-name/i);
+      expect(recipes1[0].innerHTML).toBe('Corba');
+    }, { timeout: 3000 });
+
+    userEvent.click(btnBeef);
+    await waitFor(() => {
+      const recipes1 = screen.getAllByTestId(/card-name/i);
+      expect(recipes1[0].innerHTML).toBe('Beef and Mustard Pie');
+    }, { timeout: 3000 });
 
     userEvent.click(btnAll);
-    const img2 = await screen.findByTestId(imgTestId);
-    expect(img2).toBeInTheDocument();
+    await waitFor(() => {
+      const recipes1 = screen.getAllByTestId(/card-name/i);
+      expect(recipes1[0].innerHTML).toBe('Corba');
+    }, { timeout: 3000 });
 
-    userEvent.click(img2);
+    const recipes1 = screen.getAllByTestId(/card-name/i);
+    userEvent.click(recipes1[0]);
     expect(history.location.pathname).toBe('/meals/52977');
+    expect(await screen.findByRole('img')).toHaveProperty('alt', 'Corba');
   });
 });

@@ -79,11 +79,16 @@ describe('app de receitas', () => {
     window.alert = jest.fn();
     const inputBusca = screen.getByTestId(searchInput);
     const nome = screen.getByTestId(nameRadio);
+    const primeiraLetra = screen.getByTestId(firstLetterRadio);
     const btnBuscar = screen.getByTestId(execBtn);
     userEvent.type(inputBusca, '3');
     userEvent.click(nome);
     userEvent.click(btnBuscar);
     await waitFor(() => expect(window.alert).toHaveBeenCalledTimes(1));
+    userEvent.type(inputBusca, '444444');
+    userEvent.click(primeiraLetra);
+    userEvent.click(btnBuscar);
+    expect(window.alert).toHaveBeenCalledTimes(2);
   });
 
   test('search Icon', async () => {

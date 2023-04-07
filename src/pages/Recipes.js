@@ -13,15 +13,18 @@ export default function Meals() {
   const type = atualPath === '/meals' ? 'Meal' : 'Drink';
 
   const handleFilter = async ({ target }) => {
-    const { innerText } = target;
-    if (innerText === 'All') return setResetTrigger((t) => !t);
-    if (innerText !== atualFilter) setAtualFilter(innerText);
-    if (innerText === atualFilter) {
+    const { name } = target;
+    console.log(name);
+    if (name === 'All') return setResetTrigger((t) => !t);
+    if (name !== atualFilter) setAtualFilter(name);
+    if (name === atualFilter) {
       setAtualFilter('All');
       setResetTrigger((t) => !t);
     }
-    const endpoint = atualPath === '/meals' ? `https://www.themealdb.com/api/json/v1/1/filter.php?c=${innerText}` : `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${innerText}`;
+    const endpoint = atualPath === '/meals' ? `https://www.themealdb.com/api/json/v1/1/filter.php?c=${name}` : `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${name}`;
+    console.log(endpoint);
     const response = await fetch(endpoint);
+    console.log(response);
     const respData = await response.json();
     setData(Object.values(respData)[0]);
   };
@@ -31,6 +34,7 @@ export default function Meals() {
       <div>
         { filtersToRender?.map((filter) => (
           <button
+            name={ filter }
             onClick={ handleFilter }
             data-testid={ `${filter}-category-filter` }
             key={ filter }
@@ -42,6 +46,7 @@ export default function Meals() {
         {filtersToRender.length > 0
         && (
           <button
+            name="All"
             onClick={ handleFilter }
             data-testid="All-category-filter"
             type="button"

@@ -37,16 +37,19 @@ describe('app de receitas', () => {
     expect(btnAll).toBeInTheDocument();
 
     expect(screen.getAllByRole('img')).toHaveLength(16);
+    await act(async () => {
+      userEvent.click(btnOrdinaryDrink);
+      const img1 = await screen.findByTestId(imgTestId);
+      expect(img1).toBeInTheDocument();
+    });
 
-    userEvent.click(btnOrdinaryDrink);
-    const img1 = await screen.findByTestId(imgTestId);
-    expect(img1).toBeInTheDocument();
+    await act(async () => {
+      userEvent.click(btnAll);
+      const img2 = await screen.findByTestId(imgTestId);
+      expect(img2).toBeInTheDocument();
+    });
 
-    userEvent.click(btnAll);
-    const img2 = await screen.findByTestId(imgTestId);
-    expect(img2).toBeInTheDocument();
-
-    userEvent.click(img2);
+    userEvent.click(screen.getByTestId(imgTestId));
 
     expect(history.location.pathname).toBe('/drinks/15997');
   });
