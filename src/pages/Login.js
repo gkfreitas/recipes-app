@@ -5,9 +5,7 @@ import { LoginContext } from '../context/LoginContext';
 function Login() {
   const history = useHistory();
   const [password, setPassword] = useState('');
-
-  const { email,
-    setEmail } = useContext(LoginContext);
+  const { email, setEmail } = useContext(LoginContext);
 
   function validateEmail() {
     const min = 6;

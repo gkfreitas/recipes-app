@@ -1,15 +1,15 @@
-import React from 'react';
 import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import App from '../App';
 import LoginProvider from '../context/LoginContext';
-import renderWithRouter from '../renderWithRouter';
 import SearchProvider from '../context/SearchbarContext';
+import renderWithRouter from '../renderWithRouter';
 
 const imgTestId = '0-recipe-card';
 
 describe('app de receitas', () => {
-  beforeEach(() => {
+  test('Inputs dos tipos de drinks', async () => {
     const { history } = renderWithRouter(
       <LoginProvider>
         <SearchProvider>
@@ -20,9 +20,6 @@ describe('app de receitas', () => {
     act(() => {
       history.push('/drinks');
     });
-  });
-
-  test('Inputs dos tipos de drinks', async () => {
     await screen.findByText('GG');
     await screen.findByRole('button', { name: /Ordinary Drink/i });
 
@@ -40,17 +37,20 @@ describe('app de receitas', () => {
     expect(btnAll).toBeInTheDocument();
 
     expect(screen.getAllByRole('img')).toHaveLength(16);
+    await act(async () => {
+      userEvent.click(btnOrdinaryDrink);
+      const img1 = await screen.findByTestId(imgTestId);
+      expect(img1).toBeInTheDocument();
+    });
 
-    userEvent.click(btnOrdinaryDrink);
-    const img1 = await screen.findByTestId(imgTestId);
-    expect(img1).toBeInTheDocument();
+    await act(async () => {
+      userEvent.click(btnAll);
+      const img2 = await screen.findByTestId(imgTestId);
+      expect(img2).toBeInTheDocument();
+    });
 
-    userEvent.click(btnAll);
-    const img2 = await screen.findByTestId(imgTestId);
-    expect(img2).toBeInTheDocument();
+    userEvent.click(screen.getByTestId(imgTestId));
 
-    userEvent.click(img2);
-
-    expect(screen.getByText(/Recipe/i)).toBeInTheDocument();
+    expect(history.location.pathname).toBe('/drinks/15997');
   });
 });
