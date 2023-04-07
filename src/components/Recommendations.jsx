@@ -1,15 +1,22 @@
+import clipboardCopy from 'clipboard-copy';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import '../Recommendations.css';
 import { useSearch } from '../context/SearchbarContext';
+import blackHeathIcon from '../images/blackHeartIcon.svg';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeathIcon from '../images/whiteHeartIcon.svg';
 
 export default function Recommendations({ dataRecipe }) {
   const [data, setData] = useState([]);
+  const [linkCopy, setLinkCopy] = useState(false);
+  const [isFavorite, setFavorite] = useState(false);
   const { atualPath } = useSearch();
   const { id } = useParams();
+  console.log(window.location.href);
   const type = atualPath === `/meals/${id}` ? 'Drink' : 'Meal';
-  // const type2 = atualPath === `/meals/${id}` ? 'Meal' : 'Drink';
+  const type2 = atualPath === `/meals/${id}` ? 'Meal' : 'Drink';
   const typeLocal = atualPath === `/meals/${id}` ? 'meals' : 'drinks';
   const updateData = useCallback(async () => {
     if (atualPath?.includes('/meals')) {
@@ -27,22 +34,24 @@ export default function Recommendations({ dataRecipe }) {
   const localIds = localRecipes.map((e) => e.id);
   const recipeIsDone = localIds.some((e) => e === id);
 
-  // const recipesLoaded = dataRecipe.length === 1;
+  const recipesLoaded = dataRecipe.length === 1;
 
-  // const alcoholicOrNot = type2 === 'Drink'
-  // && recipesLoaded ? dataRecipe[0].strAlcoholic : '';
+  const alcoholicOrNot = type2 === 'Drink'
+   && recipesLoaded ? dataRecipe[0].strAlcoholic : '';
+  const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+  const dataRecipes = recipesLoaded && [{
+    id: dataRecipe[0][`id${type2}`],
+    type,
+    nationality: dataRecipe[0].strArea,
+    category: dataRecipe[0].strCategory,
+    alcoholicOrNot,
+    name: dataRecipe[0][`str${type2}`],
+    image: dataRecipe[0][`str${type2}Thumb`],
+    doneDate: dataRecipe[0].dateModified,
+    tags: dataRecipe[0].strTags,
+  }];
 
-  // const dataRecipes = recipesLoaded && [{
-  //   id: dataRecipe[0][`id${type2}`],
-  //   type,
-  //   nationality: dataRecipe[0].strArea,
-  //   category: dataRecipe[0].strCategory,
-  //   alcoholicOrNot,
-  //   name: dataRecipe[0][`str${type2}`],
-  //   image: dataRecipe[0][`str${type2}Thumb`],
-  //   doneDate: dataRecipe[0].dateModified,
-  //   tags: dataRecipe[0].strTags,
-  // }];
+  const favoriteString = JSON.stringify(localFavorites.push(dataRecipes));
 
   const maxRecommendations = 6;
   const resultsData = data?.slice(0, maxRecommendations);
@@ -67,12 +76,24 @@ export default function Recommendations({ dataRecipe }) {
     localStorage.setItem('inProgressRecipes', JSON.stringify(localStarted));
   }
 
+  const handleClick = () => {
+    clipboardCopy(window.location.href);
+    setLinkCopy(true);
+  };
+
+  const localSave = () => {
+    localStorage.setItem('favoriteRecipes', favoriteString);
+    console.log(JSON.parse(localStorage.getItem('favoriteRecipes')));
+  };
+
   useEffect(() => {
     async function getList() {
       const results = await updateData();
       return results;
     }
     getList();
+    const verifyFavorite = localFavorites?.some((e) => e.id === id);
+    setFavorite(!verifyFavorite);
   }, [updateData]);
 
   return (
@@ -121,6 +142,22 @@ export default function Recommendations({ dataRecipe }) {
           </Link>
         )
       }
+      <button
+        data-testid="share-btn"
+        className="share-btn"
+        onClick={ () => handleClick() }
+      >
+        <img alt="Share button" src={ shareIcon } />
+      </button>
+      {linkCopy && <p>Link copied!</p>}
+      <button
+        aria-label="save"
+        type="button"
+        onClick={ () => localSave() }
+        src={ isFavorite ? whiteHeathIcon : blackHeathIcon }
+        data-testid="favorite-btn"
+        className="favorite-btn"
+      />
     </>
   );
 }
