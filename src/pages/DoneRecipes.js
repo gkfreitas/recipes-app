@@ -43,12 +43,12 @@ export default function DoneRecipes() {
         doneRecipes
           .filter((recipe) => filter === 'all' || filter === recipe.type)
           .map((recipe, index) => (
-
             <div key={ index }>
               <Link to={ `/${recipe.type}s/${recipe.id}` }>
                 <div>
-
                   <img
+                    height={ 150 }
+                    width={ 150 }
                     src={ recipe.image }
                     alt="recipe"
                     data-testid={ `${index}-horizontal-image` }
@@ -89,7 +89,6 @@ export default function DoneRecipes() {
                   ))
                 }
               </div>
-
             </div>
           ))
       }

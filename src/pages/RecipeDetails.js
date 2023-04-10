@@ -2,15 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Recommendations from '../components/Recommendations';
 import { useSearch } from '../context/SearchbarContext';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import FavoriteBtn from '../components/FavoriteBtn';
 
 export default function FavoriteRecipes() {
   const { id } = useParams();
   const [data, setData] = useState([]);
   const { atualPath } = useSearch();
-  const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
-  const [isFavorite, setIsFavorite] = useState(favoriteRecipes.find((e) => e.id === id));
   const type = atualPath === `/meals/${id}` ? 'Meal' : 'Drink';
 
   const updateData = useCallback(async () => {
@@ -39,27 +36,6 @@ export default function FavoriteRecipes() {
     getList();
   }, [updateData]);
 
-  const handleFavorite = (recipe) => {
-    const newFavoriteRecipes = isFavorite
-      ? favoriteRecipes.filter((e) => e.id !== id) : [
-        ...favoriteRecipes,
-        {
-          id,
-          type,
-          nationality: recipe.strArea,
-          category: recipe.strCategory,
-          alcoholicOrNot: recipe.strAlcoholic || '',
-          name: recipe[`str${type}`],
-          image: recipe[`str${type}Thumb`],
-        },
-      ];
-    localStorage.setItem(
-      'favoriteRecipes',
-      JSON.stringify(newFavoriteRecipes),
-    );
-    setIsFavorite(!isFavorite);
-  };
-
   const objectsData = data[0] && Object.keys(data[0]);
   const ingredients = objectsData?.filter((e) => e.includes('strIngredient'));
   const measures = objectsData?.filter((e) => e.includes('strMeasure'));
@@ -70,15 +46,7 @@ export default function FavoriteRecipes() {
     <div>
       {data?.map((recipe) => (
         <div key={ id }>
-          <button
-            onClick={ () => handleFavorite(recipe) }
-          >
-            <img
-              data-testid="favorite-btn"
-              alt="heart"
-              src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
-            />
-          </button>
+          <FavoriteBtn recipe={ recipe } />
           <img
             data-testid="recipe-photo"
             src={ recipe[`str${type}Thumb`] }
