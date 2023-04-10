@@ -2,9 +2,28 @@
   display: flex;
   overflow: auto;
   scroll-snap-type: x mandatory;
+  width: 100%;
 }
 
 .container .item {
   flex-shrink: 0;
+  padding: 10px;
   scroll-snap-align: start;
+}
+
+.button-start {
+  bottom: 0;
+  position: fixed;
+}
+
+.share-btn {
+  bottom: 0;
+  left: 50%;
+  position: fixed;
+}
+
+.favorite-btn {
+  bottom: 0;
+  left: 70%;
+  position: fixed;
 }

@@ -16,6 +16,7 @@ function FavoriteBtn({ recipe, dataTest, click }) {
   const [isFavorite, setIsFavorite] = useState(
     favoriteRecipes.find((e) => e.id === id),
   );
+
   const handleFavorite = () => {
     const newFavoriteRecipes = isFavorite
       ? favoriteRecipes.filter((e) => e.id !== id) : [
@@ -36,6 +37,7 @@ function FavoriteBtn({ recipe, dataTest, click }) {
     );
     setIsFavorite(!isFavorite);
   };
+
   return (
     <button
       onClick={ () => {

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../Recommendations.css';
@@ -7,17 +8,18 @@ export default function Recommendations() {
   const [data, setData] = useState([]);
   const { atualPath } = useSearch();
   const { id } = useParams();
+  const type = atualPath === `/meals/${id}` ? 'Drink' : 'Meal';
 
   const updateData = useCallback(async () => {
     if (atualPath?.includes('/meals')) {
       const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
       const mealsData = await response.json();
-      setData(mealsData.meals);
+      setData(mealsData.drinks);
     }
     if (atualPath?.includes('/drinks')) {
       const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
       const drinkData = await response.json();
-      setData(drinkData.drinks);
+      setData(drinkData.meals);
     }
   }, []);
 
@@ -31,24 +33,26 @@ export default function Recommendations() {
     }
     getList();
   }, [updateData]);
-  console.log(data);
+
   return (
     <div className="container">
       {
-        resultsData?.map((meal, index) => {
-          const type = atualPath === `/meals/${id}` ? 'Meal' : 'Drink';
-          return (
-            <div className="item" key={ `${meal.idDrink}${index}` }>
-              <div data-testid={ `${index}-recommendation-card` }>
-                <div data-testid={ `${index}-recommendation-title` }>
-                  {meal[`str${type}`]}
-                </div>
+        resultsData?.map((meal, index) => (
+          <div className="item" key={ `${meal.idDrink}${index}` }>
+            <div data-testid={ `${index}-recommendation-card` }>
+              <img
+                width="150px"
+                height="100px"
+                src={ meal[`str${type}Thumb`] }
+                alt={ meal[`str${type}`] }
+              />
+              <div data-testid={ `${index}-recommendation-title` }>
+                {meal[`str${type}`]}
               </div>
             </div>
-          );
-        })
+          </div>
+        ))
       }
-
     </div>
   );
 }

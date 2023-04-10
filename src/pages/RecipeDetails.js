@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Recommendations from '../components/Recommendations';
+import ShareButton from '../components/ShareButton';
+import StartButton from '../components/StartButton';
 import { useSearch } from '../context/SearchbarContext';
 import FavoriteBtn from '../components/FavoriteBtn';
 
@@ -16,7 +18,6 @@ export default function FavoriteRecipes() {
         `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
       );
       const mealsData = await response.json();
-      console.log(mealsData);
       setData(mealsData.meals);
     }
     if (atualPath?.includes('/drinks')) {
@@ -80,7 +81,9 @@ export default function FavoriteRecipes() {
         </div>
       ))}
       Recommendations:
-      <Recommendations />
+      <Recommendations dataRecipe={ data } />
+      <StartButton dataRecipe={ data } />
+      <ShareButton />
     </div>
   );
 }
