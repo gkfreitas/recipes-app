@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import FavoriteButton from '../components/FavoriteButton';
 import Recommendations from '../components/Recommendations';
+import ShareButton from '../components/ShareButton';
+import StartButton from '../components/StartButton';
 import { useSearch } from '../context/SearchbarContext';
 
 export default function FavoriteRecipes() {
@@ -71,6 +74,9 @@ export default function FavoriteRecipes() {
       }
       Recommendations:
       <Recommendations dataRecipe={ data } />
+      <StartButton dataRecipe={ data } />
+      <ShareButton />
+      <FavoriteButton dataRecipe={ data } />
     </div>
   );
 }
