@@ -27,3 +27,8 @@
   left: 70%;
   position: fixed;
 }
+
+.checked-item {
+  text-decoration: line-through solid;
+  text-decoration-color: black;
+}
