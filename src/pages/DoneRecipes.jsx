@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import clipboardCopy from 'clipboard-copy';
+import { Link } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 
 export default function DoneRecipes() {
@@ -42,19 +43,25 @@ export default function DoneRecipes() {
         doneRecipes
           .filter((recipe) => filter === 'all' || filter === recipe.type)
           .map((recipe, index) => (
+
             <div key={ index }>
-              <img
-                src={ recipe.image }
-                alt="recipe"
-                data-testid={ `${index}-horizontal-image` }
-              />
-              <p data-testid={ `${index}-horizontal-top-text` }>
-                {`${recipe.type === 'drink'
-                  ? recipe.alcoholicOrNot : recipe.nationality} - ${recipe.category}`}
-              </p>
-              <p data-testid={ `${index}-horizontal-name` }>
-                {recipe.name}
-              </p>
+              <Link to={ `/${recipe.type}s/${recipe.id}` }>
+                <div>
+
+                  <img
+                    src={ recipe.image }
+                    alt="recipe"
+                    data-testid={ `${index}-horizontal-image` }
+                  />
+                </div>
+                <p data-testid={ `${index}-horizontal-top-text` }>
+                  {`${recipe.type === 'drink'
+                    ? recipe.alcoholicOrNot : recipe.nationality} - ${recipe.category}`}
+                </p>
+                <p data-testid={ `${index}-horizontal-name` }>
+                  {recipe.name}
+                </p>
+              </Link>
               <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
               <button
                 onClick={ () => handleShareButtonClick(recipe) }
