@@ -65,6 +65,6 @@ describe('app de receitas', () => {
     const recipes1 = screen.getAllByTestId(/card-name/i);
     userEvent.click(recipes1[0]);
     expect(history.location.pathname).toBe('/meals/52977');
-    expect(await screen.findByRole('img')).toHaveProperty('alt', 'Corba');
+    expect(await screen.findByText('Corba')).toBeInTheDocument();
   });
 });

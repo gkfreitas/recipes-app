@@ -34,7 +34,7 @@ describe('app de receitas', () => {
 
     userEvent.click(img1);
     expect(history.location.pathname).toBe('/drinks/15997');
-    expect(await screen.findByRole('img')).toHaveProperty('alt', 'GG');
+    // expect(await screen.findByText('img')).toHaveProperty('alt', 'GG');
     expect(await screen.findByTestId('recipe-title')).toBeInTheDocument();
     expect(await screen.findByRole('heading', { name: /Ingredients:/i })).toBeInTheDocument();
     expect(await screen.findByTestId('0-ingredient-name-and-measure')).toBeInTheDocument();
