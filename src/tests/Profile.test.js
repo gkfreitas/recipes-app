@@ -1,11 +1,19 @@
 import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import LoginProvider from '../context/LoginContext';
+import SearchProvider from '../context/SearchbarContext';
 import Profile from '../pages/Profile';
 import renderWithRouter from '../renderWithRouter';
 
 test('Testando elementos da pagina Profile', () => {
-  const { history } = renderWithRouter(<Profile />);
+  const { history } = renderWithRouter(
+    <LoginProvider>
+      <SearchProvider>
+        <Profile />
+      </SearchProvider>
+    </LoginProvider>,
+  );
 
   const emailText = screen.getByRole('heading', { level: 2 });
   expect(emailText).toBeInTheDocument();
