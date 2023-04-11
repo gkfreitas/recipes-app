@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import FavoriteBtn from '../components/FavoriteBtn';
 import Recommendations from '../components/Recommendations';
 import ShareButton from '../components/ShareButton';
 import StartButton from '../components/StartButton';
 import { useSearch } from '../context/SearchbarContext';
-import FavoriteBtn from '../components/FavoriteBtn';
 
 export default function FavoriteRecipes() {
   const { id } = useParams();
@@ -45,41 +45,54 @@ export default function FavoriteRecipes() {
 
   return (
     <div>
-      {data?.map((recipe) => (
-        <div key={ id }>
-          <FavoriteBtn recipe={ recipe } />
-          <img
-            data-testid="recipe-photo"
-            src={ recipe[`str${type}Thumb`] }
-            alt={ recipe[`str${type}`] }
-          />
-          <p data-testid="recipe-title">{recipe[`str${type}`]}</p>
-          <p data-testid="recipe-category">
-            {`${recipe.strCategory} ${recipe.strAlcoholic}`}
-          </p>
-          <h3>Ingredients:</h3>
-          {ingredients.map((e, index) => (
-            <p key={ e } data-testid={ `${index}-ingredient-name-and-measure` }>
-              {`${recipe[e] !== null ? recipe[e] : ''} 
-                  ${
-            recipe[measures[index]] !== null ? recipe[measures[index]] : ''
-            }`}
+      {data?.map((recipe) => {
+        console.log(recipe);
+        const recipeFav = {
+          id: recipe[`id${type}`],
+          type: type.toLowerCase(),
+          nationality: recipe.strArea || '',
+          category: recipe.strCategory || '',
+          alcoholicOrNot: recipe.strAlcoholic || '',
+          name: recipe[`str${type}`],
+          image: recipe[`str${type}Thumb`],
+        };
+
+        return (
+          <div key={ id }>
+            <FavoriteBtn recipe={ recipeFav } />
+            <img
+              data-testid="recipe-photo"
+              src={ recipe[`str${type}Thumb`] }
+              alt={ recipe[`str${type}`] }
+            />
+            <p data-testid="recipe-title">{recipe[`str${type}`]}</p>
+            <p data-testid="recipe-category">
+              {`${recipe.strCategory} ${recipe.strAlcoholic}`}
             </p>
-          ))}
-          <h3>Instructions:</h3>
-          <p data-testid="instructions">{recipe.strInstructions}</p>
-          <iframe
-            data-testid="video"
-            src={
-              data[0].strYoutube
-                && `https://www.youtube.com/embed/${endpoint[1]}`
-            }
-            height="500px"
-            width="600px"
-            title="Video"
-          />
-        </div>
-      ))}
+            <h3>Ingredients:</h3>
+            {ingredients.map((e, index) => (
+              <p key={ e } data-testid={ `${index}-ingredient-name-and-measure` }>
+                {`${recipe[e] !== null ? recipe[e] : ''} 
+                    ${
+              recipe[measures[index]] !== null ? recipe[measures[index]] : ''
+              }`}
+              </p>
+            ))}
+            <h3>Instructions:</h3>
+            <p data-testid="instructions">{recipe.strInstructions}</p>
+            <iframe
+              data-testid="video"
+              src={
+                data[0].strYoutube
+                  && `https://www.youtube.com/embed/${endpoint[1]}`
+              }
+              height="500px"
+              width="600px"
+              title="Video"
+            />
+          </div>
+        );
+      })}
       Recommendations:
       <Recommendations dataRecipe={ data } />
       <StartButton dataRecipe={ data } />

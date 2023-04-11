@@ -35,10 +35,9 @@ export default function StartButton({ dataRecipe }) {
     };
     localStorage.setItem('inProgressRecipes', JSON.stringify(localStarted));
   }
-
   return (
     <>
-      { !verifyInProgress && !recipeIsDone && !verifyRecipe[0] === id
+      { !verifyInProgress && !recipeIsDone
       && (
         <Link to={ `${atualPath}/in-progress` }>
           <button

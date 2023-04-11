@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
 import clipboardCopy from 'clipboard-copy';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import shareIcon from '../images/shareIcon.svg';
 import FavoriteBtn from '../components/FavoriteBtn';
+import Header from '../components/Header';
+import shareIcon from '../images/shareIcon.svg';
 
 export default function FavoriteRecipes() {
   const doneRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
   const [showLinkCopiedMessage, setShowLinkCopiedMessage] = useState(false);
   const [filter, setFilter] = useState('all');
-  console.log(doneRecipes.filter((recipe) => filter === 'all' || filter === recipe.type));
 
   const seconds = 2000;
 
@@ -23,6 +23,7 @@ export default function FavoriteRecipes() {
 
   return (
     <div>
+      <Header name="Favorite Recipes" />
       <button
         onClick={ () => setFilter('all') }
         data-testid="filter-by-all-btn"
@@ -43,8 +44,8 @@ export default function FavoriteRecipes() {
       </button>
       {
         doneRecipes
-          .filter((recipe) => filter === 'all' || filter === recipe.type)
-          .map((recipe, index) => (
+          ?.filter((recipe) => filter === 'all' || filter === recipe.type)
+          ?.map((recipe, index) => (
             <div key={ index }>
               <Link to={ `/${recipe.type}s/${recipe.id}` }>
                 <div>

@@ -1,35 +1,20 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 function FavoriteBtn({ recipe, dataTest, click }) {
-  const {
-    id,
-    type,
-    strArea: nationality,
-    strCategory: category,
-    strAlcoholic: alcoholicOrNot,
-    [`str${type}`]: name,
-    [`str${type}Thumb`]: image } = recipe;
   const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+
   const [isFavorite, setIsFavorite] = useState(
-    favoriteRecipes.find((e) => e.id === id),
+    favoriteRecipes.some((e) => e.id === recipe.id),
   );
 
   const handleFavorite = () => {
     const newFavoriteRecipes = isFavorite
-      ? favoriteRecipes.filter((e) => e.id !== id) : [
+      ? favoriteRecipes.filter((e) => e.id !== recipe.id) : [
         ...favoriteRecipes,
-        {
-          id,
-          type,
-          nationality,
-          category,
-          alcoholicOrNot,
-          name,
-          image,
-        },
+        recipe,
       ];
     localStorage.setItem(
       'favoriteRecipes',
