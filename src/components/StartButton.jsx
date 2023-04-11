@@ -35,7 +35,6 @@ export default function StartButton({ dataRecipe }) {
     };
     localStorage.setItem('inProgressRecipes', JSON.stringify(localStarted));
   }
-
   return (
     <>
       { !verifyInProgress && !recipeIsDone
