@@ -1,15 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import '../Recommendations.css';
+import FavoriteBtn from '../components/FavoriteBtn';
 import Recommendations from '../components/Recommendations';
 import ShareButton from '../components/ShareButton';
 import StartButton from '../components/StartButton';
 import { useSearch } from '../context/SearchbarContext';
-import FavoriteBtn from '../components/FavoriteBtn';
 
-export default function FavoriteRecipes() {
+export default function RecipeInProgress() {
   const { id } = useParams();
   const [data, setData] = useState([]);
   const { atualPath } = useSearch();
+  const [isChecked, setChecked] = useState([]);
   const type = atualPath === `/meals/${id}` ? 'Meal' : 'Drink';
 
   const updateData = useCallback(async () => {
@@ -43,6 +45,40 @@ export default function FavoriteRecipes() {
   const linkYoutube = data[0] && data[0].strYoutube;
   const endpoint = linkYoutube?.split('?v=');
 
+  const verifyChecked = (item) => {
+    const verify = isChecked.includes(item) ? 'checked-item' : 'not-checked';
+    return verify;
+  };
+
+  const typeLocal = atualPath === `/meals/${id}` ? 'meals' : 'drinks';
+  const objIngredients = objectsData?.filter((e) => e.includes('strIngredient'));
+  const ingredientsNew = data?.map((r) => {
+    const newArray = objIngredients.map((e) => {
+      const verify = r[e] !== null ? r[e] : '';
+      return verify;
+    });
+    return newArray.filter((e) => e !== '');
+  });
+  const localStarted = JSON.parse(localStorage.getItem('inProgressRecipes'))
+  || { drinks: {}, meals: {} };
+
+  function startedRecipe() {
+    localStarted[typeLocal] = {
+      [id]: ingredientsNew[0],
+    };
+    localStorage.setItem('inProgressRecipes', JSON.stringify(localStarted));
+  }
+  const checkboxVerify = ({ target }) => {
+    let updatedList = [...isChecked];
+    if (target.checked) {
+      updatedList = [...isChecked, target.value];
+    } else {
+      updatedList.splice(isChecked.indexOf(target.value), 1);
+    }
+    setChecked(updatedList);
+    startedRecipe();
+  };
+
   return (
     <div>
       {data?.map((recipe) => (
@@ -58,14 +94,27 @@ export default function FavoriteRecipes() {
             {`${recipe.strCategory} ${recipe.strAlcoholic}`}
           </p>
           <h3>Ingredients:</h3>
-          {ingredients.map((e, index) => (
-            <p key={ e } data-testid={ `${index}-ingredient-name-and-measure` }>
-              {`${recipe[e] !== null ? recipe[e] : ''} 
-                  ${
-            recipe[measures[index]] !== null ? recipe[measures[index]] : ''
-            }`}
-            </p>
-          ))}
+          {ingredients.map((e, index) => {
+            const label = (
+              recipe[e] !== '' && recipe[e] !== null && recipe[measures[index]] !== ''
+              && recipe[measures[index]] !== null
+              && (
+                <label
+                  key={ e }
+                  data-testid={ `${index}-ingredient-step` }
+                  className={ verifyChecked(e) }
+                >
+                  `
+                  {recipe[e]}
+                  {' '}
+
+                  {recipe[measures[index]]}
+                  `
+                  <input value={ e } type="checkbox" onChange={ checkboxVerify } />
+                </label>)
+            );
+            return label;
+          })}
           <h3>Instructions:</h3>
           <p data-testid="instructions">{recipe.strInstructions}</p>
           <iframe
