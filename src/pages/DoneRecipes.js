@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
 import clipboardCopy from 'clipboard-copy';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 
 export default function DoneRecipes() {
@@ -21,6 +22,7 @@ export default function DoneRecipes() {
 
   return (
     <div>
+      <Header name="Done Recipes" />
       <button
         onClick={ () => setFilter('all') }
         data-testid="filter-by-all-btn"
@@ -41,8 +43,8 @@ export default function DoneRecipes() {
       </button>
       {
         doneRecipes
-          .filter((recipe) => filter === 'all' || filter === recipe.type)
-          .map((recipe, index) => (
+          ?.filter((recipe) => filter === 'all' || filter === recipe.type)
+          ?.map((recipe, index) => (
             <div key={ index }>
               <Link to={ `/${recipe.type}s/${recipe.id}` }>
                 <div>

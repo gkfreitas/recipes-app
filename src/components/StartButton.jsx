@@ -38,7 +38,7 @@ export default function StartButton({ dataRecipe }) {
 
   return (
     <>
-      { !verifyInProgress && !recipeIsDone && !verifyRecipe[0] === id
+      { !verifyInProgress && !recipeIsDone
       && (
         <Link to={ `${atualPath}/in-progress` }>
           <button

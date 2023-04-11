@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import SearchBar from './SearchBar';
 import { useSearch } from '../context/SearchbarContext';
+import SearchBar from './SearchBar';
 
-function Header() {
+function Header({ name }) {
   const [search, setSearch] = useState(false);
   const { atualPath } = useSearch();
 
@@ -55,7 +56,7 @@ function Header() {
         </button>
       )}
 
-      <p data-testid="page-title">{atualPathInfos.title}</p>
+      <p data-testid="page-title">{name}</p>
       {search && (
         <SearchBar type={ atualPathInfos.type } />
       )}
@@ -64,3 +65,7 @@ function Header() {
 }
 
 export default Header;
+
+Header.propTypes = {
+  name: PropTypes.string.isRequired,
+};

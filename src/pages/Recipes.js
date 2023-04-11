@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
 import { useSearch } from '../context/SearchbarContext';
 
 export default function Meals() {
@@ -11,6 +12,7 @@ export default function Meals() {
   const results = data?.slice(0, maxRecipes);
   const filtersToRender = filters?.slice(0, maxFilters);
   const type = atualPath === '/meals' ? 'Meal' : 'Drink';
+  const type2 = atualPath === '/meals' ? 'Meals' : 'Drinks';
 
   const handleFilter = async ({ target }) => {
     const { innerText } = target;
@@ -28,6 +30,7 @@ export default function Meals() {
 
   return (
     <div>
+      <Header name={ type2 } />
       <div>
         { filtersToRender?.map((filter) => (
           <button
